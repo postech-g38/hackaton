@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hackathon-pod
+  labels:
+    app: hackathon-pod
+spec:
+  template:
+    metadata:
+      name: hackathon-pod
+      labels:
+        app: hackathon-pod
+    spec:
+      containers:
+        - name: hackathon-api
+          image: hiltonbruno633/hackaton-api:latest
+          ports:
+            - containerPort: 80
+          envFrom:
+            - secretRef:
+                name: secret-hackaton
+          livenessProbe:
+            httpGet:
+              path: //health_check
+              port: 8000
+            periodSeconds: 10
+            failureThreshold: 5
+          resources:
+            requests:
+              cpu: 10m
+            limits:
+              cpu: 500m
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hackathon-pod
+

@@ -3,7 +3,7 @@ version: '3.8'
 services:
 
   application:
-    container_name: byte-burguer-orders-api
+    container_name: hackaton-api
     build: 
       context: .
       dockerfile: Dockerfile
