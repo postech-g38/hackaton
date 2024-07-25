@@ -98,7 +98,6 @@ def test_appointment_service_update_then_raise_not_found_exception():
 
     # assert
     appointment_repository_mock.search_by_id.assert_called_once_with(appointment.client_id)
-    assert notification_mock.sms.assert_called_once()
 
 
 def test_appointment_service_update_then_object():

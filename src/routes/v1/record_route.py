@@ -8,6 +8,10 @@ from src.services.record_service import RecordService
 from src.adapters.repositories.record_repository import RecordRepository
 from src.schemas.record_schema import RecordSchema, RecordResponseSchema
 from src.adapters.database.settings import database_session
+from src.adapters.s3.settings import SimpleStorageService
+from src.settings import GeneralSettings
+
+BUCKET = GeneralSettings.aws_settings.simple_storage_service_bucket_name
 
 router = APIRouter(prefix='/records', tags=['Pedido'])
 
@@ -38,7 +42,7 @@ def search(
     record_id: int = Path(...), 
     database = Depends(database_session)
 ):
-    service = RecordService(RecordRepository(database))
+    service = RecordService(RecordRepository(database), SimpleStorageService(BUCKET))
     data = RecordResponseSchema.model_validate(service.search(record_id))
     return Response(
         status_code=HTTPStatus.OK,
@@ -55,7 +59,7 @@ def create(
     payload: AppointmentSchema = Body(...), 
     database = Depends(database_session)
 ):
-    service = RecordService(RecordRepository(database))
+    service = RecordService(RecordRepository(database), SimpleStorageService(BUCKET))
     data = RecordResponseSchema.model_validate(service.create(payload))
     return Response(
         status_code=HTTPStatus.CREATED,
@@ -73,7 +77,7 @@ def update(
     payload: AppointmentSchema = Body(...), 
     database = Depends(database_session)
 ):
-    service = RecordService(RecordRepository(database))
+    service = RecordService(RecordRepository(database),SimpleStorageService(BUCKET))
     data = RecordResponseSchema.model_validate(service.update(record_id, payload))
     return Response(
         status_code=HTTPStatus.ACCEPTED,
@@ -90,7 +94,7 @@ def delete(
     record_id: int = Path(...), 
     database = Depends(database_session)
 ):
-    service = RecordService(RecordRepository(database))
+    service = RecordService(RecordRepository(database), SimpleStorageService(BUCKET))
     data = RecordResponseSchema.model_validate(service.delete(record_id))
     return Response(
         status_code=HTTPStatus.ACCEPTED,
@@ -108,7 +112,7 @@ def allow_doctor_read(
     doctor_id: int = Path(...),
     database = Depends(database_session)
 ):
-    service = RecordService(RecordRepository(database))
+    service = RecordService(RecordRepository(database), SimpleStorageService(BUCKET))
     data = RecordResponseSchema.model_validate(service.allow_doctor_read(record_id, doctor_id))
     return Response(
         status_code=201,
@@ -126,7 +130,7 @@ def remove_doctor_read(
     doctor_id: int = Path(...),
     database = Depends(database_session)
 ):
-    service = RecordService(RecordRepository(database))
+    service = RecordService(RecordRepository(database), SimpleStorageService(BUCKET))
     data = RecordResponseSchema.model_validate(service.remove_doctor_read(record_id, doctor_id))
     return Response(
         status_code=201,
