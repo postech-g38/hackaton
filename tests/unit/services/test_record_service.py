@@ -22,7 +22,7 @@ def test_record_service_search_then_raise_not_found_exception():
         record_service.search(record_id)
 
     # assert
-    assert record_repository_mock.search_by_id.called_once_with(record_id)
+    record_repository_mock.search_by_id.assert_called_once_with(record_id)
 
 
 def test_record_service_search_then_return_record_object():
@@ -38,7 +38,7 @@ def test_record_service_search_then_return_record_object():
     result = record_service.search(record_id)
 
     # assert
-    assert record_repository_mock.search_by_id.called_once()
+    record_repository_mock.search_by_id.assert_called_once()
     assert result
 
 
@@ -55,7 +55,7 @@ def test_record_service_create_then_object():
     result = record_service.create(record)
 
     # assert
-    assert record_repository_mock.save.called_once_with(record)
+    record_repository_mock.save.assert_called_once_with(record)
     assert result
 
 
@@ -74,7 +74,7 @@ def test_record_service_update_then_raise_not_found_exception():
         record_service.update(record_id, record)
 
     # assert
-    assert record_repository_mock.search_by_id.called_once_with(record_id)
+    record_repository_mock.search_by_id.assert_called_once_with(record_id)
 
 
 def test_record_service_update_then_object():
@@ -91,7 +91,8 @@ def test_record_service_update_then_object():
     result = record_service.update(record_id, record)
 
     # assert
-    assert record_repository_mock.update.called_once_with(record_id, record)
+    record_repository_mock.search_by_id.assert_called_once()
+    record_repository_mock.update.assert_called_once()
     assert result
 
 
@@ -109,7 +110,7 @@ def test_record_service_delete_then_raise_not_found_exception():
         record_service.delete(record_id)
 
     # assert
-    assert record_repository_mock.search_by_id.called_once_with(record_id)
+    record_repository_mock.search_by_id.assert_called_once_with(record_id)
 
 
 def test_record_service_delete_then_object():
@@ -125,5 +126,5 @@ def test_record_service_delete_then_object():
     result = record_service.delete(record_id)
 
     # assert
-    assert record_repository_mock.search_by_id.called_once_with(record_id)
+    record_repository_mock.search_by_id.assert_called_once_with(record_id)
     assert result
