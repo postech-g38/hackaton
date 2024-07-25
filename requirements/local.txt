@@ -1,4 +1,4 @@
--r requirements/common.txt
+-r common.txt
 
 pytest==7.4.2
 pytest-mock==3.11.1
