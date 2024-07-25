@@ -14,6 +14,11 @@ class NotFoundExcepition(HTTPException):
         super().__init__(HTTPStatus.NOT_FOUND, f"{model} not found")
 
 
+class NoConentException(HTTPException):
+    def __init__(self, model: str = 'values') -> None:
+        super().__init__(HTTPStatus.NO_CONTENT, f"{model} not found")
+
+
 @dataclass
 class BaseService:
 
