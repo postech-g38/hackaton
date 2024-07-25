@@ -7,7 +7,10 @@ from src.schemas.appointment_schema import AppointmentSchema, AppointmentRespons
 from src.schemas.appointment_schema import AppointmentSchema
 from src.services.appointment_service import AppointmentService
 from src.adapters.repositories.appointment_repository import AppointmentRepository
+from src.adapters.repositories.client_repository import ClientRepository
+from src.adapters.repositories.doctor_repository import DoctorRepository
 from src.adapters.database.settings import database_session
+from src.adapters.sns.settings import SimpleNotificationService
 
 router = APIRouter(prefix='/appointments', tags=['Pedido'])
 
@@ -38,7 +41,12 @@ def search(
     appointment_id: int = Path(...), 
     database = Depends(database_session)
 ):
-    service = AppointmentService(AppointmentRepository(database))
+    service = AppointmentService(
+        AppointmentRepository(database),
+        DoctorRepository(database),
+        ClientRepository(database),
+        SimpleNotificationService()
+        )
     data = AppointmentSchema.model_validate(service.search(appointment_id))
     return Response(
         status_code=HTTPStatus.OK,
@@ -55,7 +63,12 @@ def create(
     payload: AppointmentSchema = Body(...), 
     database = Depends(database_session)
 ):
-    service = AppointmentService(AppointmentRepository(database))
+    service = AppointmentService(
+        AppointmentRepository(database),
+        DoctorRepository(database),
+        ClientRepository(database),
+        SimpleNotificationService()
+    )
     data = AppointmentSchema.model_validate(service.create(payload))
     return Response(
         status_code=HTTPStatus.CREATED,
@@ -73,7 +86,12 @@ def update(
     appointment_data: AppointmentSchema = Body(...), 
     database = Depends(database_session)
 ):
-    service = AppointmentService(AppointmentRepository(database))
+    service = AppointmentService(
+        AppointmentRepository(database),
+        DoctorRepository(database),
+        ClientRepository(database),
+        SimpleNotificationService()
+    )
     data = AppointmentSchema.model_validate(service.update(appointment_id, appointment_data))
     return Response(
         status_code=HTTPStatus.ACCEPTED,
@@ -90,7 +108,12 @@ def delete(
     appointment_id: int = Path(...), 
     database = Depends(database_session)
 ):
-    service = AppointmentService(AppointmentRepository(database))
+    service = AppointmentService(
+        AppointmentRepository(database),
+        DoctorRepository(database),
+        ClientRepository(database),
+        SimpleNotificationService()
+    )
     data = AppointmentSchema.model_validate(service.delete(appointment_id))
     return Response(
         status_code=HTTPStatus.ACCEPTED,

@@ -69,9 +69,15 @@ class DatabaseSettings(BaseSettings):
         )
 
 
+class AwsSettings(BaseSettings):
+    simple_storage_service_bucket_name: str = Field(..., validation_alias='AWS_SIMPLE_STORAGE_SERVICE_BUCKET_NAME')
+    simple_notification_service_topic_name: str = Field(..., validation_alias='AWS_SIMPLE_NOTIFICATION_SERVICE_TOPIC_NAME')
+
+
 class GeneralSettings(BaseSettings):
     application_settings: ClassVar = ApplicationSettings()
     database_settings: ClassVar = DatabaseSettings()
+    aws_settings: ClassVar = AwsSettings()
 
 
 @lru_cache
