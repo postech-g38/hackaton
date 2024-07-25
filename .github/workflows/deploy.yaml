@@ -1,0 +1,89 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements/common.txt
+          pip install -r requirements/local.txt
+
+      - name: Run pytest with coverage
+        run: pytest --cov-report=xml:coverage.xml  # --verbose --cov=src 
+
+      - name: Adjust coverage paths
+        run: sed -i 's|/home/runner/work/ByteBiteBurgersUsers/ByteBiteBurgersUsers/src|src|g' coverage.xml
+
+      - name: List coverage file
+        run: ls -la coverage.xml
+
+      - name: Show coverage.xml content
+        run: cat coverage.xml
+
+  build-and-push:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - run: |
+          echo "Current working directory:"
+          pwd
+          echo "Listing files in the current directory:"
+          ls -l
+
+      - uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: hiltonbruno633/byte-burguer-user:latest
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - run: |
+          aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }}
+        
+      - name: List files in k8s/api/
+        run: ls -R k8s/api/
+
+      - name: Deploy to Kubernetes
+        run: kubectl apply -f k8s/api/
