@@ -1,3 +1,4 @@
 from src.adapters.repositories.appointment_repository import AppointmentRepository
 from src.adapters.repositories.doctor_repository import DoctorRepository
 from src.adapters.repositories.record_repository import RecordRepository
+from src.adapters.repositories.client_repository import ClientRepository

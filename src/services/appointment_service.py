@@ -6,12 +6,13 @@ from src.domain.entities.appointment_entity import Appointment
 from src.domain.entities.doctor_entity import Doctor
 from src.domain.ports.payload_port import DoctorSearchPayload
 from src.common.date_helper import DateHelper
+from src.services.service_base import BaseService, NoConentException
 
 from src.enums import AppointmentStatus
 
 
 
-class AppointmentService:
+class AppointmentService(BaseService):
 
     def __init__(
         self, 
@@ -29,24 +30,25 @@ class AppointmentService:
         pass
 
     def search(self, appointment_id: int) -> Appointment:
-        return self._appointment_repository.search_by_id(appointment_id)
+        return self.query_result(self._appointment_repository.search_by_id(appointment_id))
 
     def create(self, appointment: Appointment) -> Appointment:
         if ocuppied := self._appointment_repository.search_by_time_window(appointment.start_time, appointment.end_time):
-            return 
+            raise NoConentException('No avaliable time space')
         return self._appointment_repository.save(Appointment)
 
     def update(self, appointment_id, appointment: Appointment) -> Appointment:
+        appointment = self.query_result(self._appointment_repository.search_by_id(appointment_id))
         appointment = self._appointment_repository.update(appointment_id, appointment)
 
         if appointment.status == AppointmentStatus.CONFIRMED:
             client = self._client_repository.search_by_id(appointment.client_id)
-            self._notification.send()
+            self._notification.sms()
         
         return appointment
     
     def delete(self, appointment_id) -> Appointment:
-        appointment = self._appointment_repository.search_by_id(appointment_id)
+        appointment = self.query_result(self._appointment_repository.search_by_id(appointment_id))
         appointment.deleted_at = DateHelper.now()
         self._appointment_repository.delete(appointment)
         return appointment

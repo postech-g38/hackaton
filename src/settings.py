@@ -41,24 +41,24 @@ class DatabaseSettings(BaseSettings):
 
     @property
     def database_unittest_sync_uri(self) -> str:
-        return self._build_memory_uri('sqlite')
+        return self.__build_memory_uri('sqlite', '.targets/unittest.db')
     
     @property
     def database_unittest_async_uri(self) -> str:
-        return self._build_memory_uri('aiosqlite')
+        return self.__build_memory_uri('aiosqlite', '.targets/unittest.db')
 
     @property
     def database_sync_uri(self) -> URL:
-        return self._build_uri('postgresql', 'psycopg2')
+        return self.__build_uri('postgresql', 'psycopg2')
     
     @property
     def database_async_uri(self) -> URL:
-        return self._build_uri('postgresql', 'asyncpg')
+        return self.__build_uri('postgresql', 'asyncpg')
 
-    def _build_memory_uri(self, driver: str, path: str) -> str:
-        return f"{driver}:///unittest.db"
+    def __build_memory_uri(self, driver: str, path: str) -> str:
+        return f"{driver}:///.targets/unittest.db"
 
-    def _build_uri(self, driver: str, dialect: str) -> URL:
+    def __build_uri(self, driver: str, dialect: str) -> URL:
         return URL.create(
             drivername=f"{driver}+{dialect}",
             username=self.database_username, 
