@@ -25,7 +25,7 @@ jobs:
           pip install -r requirements/local.txt
 
       - name: Run pytest with coverage
-        run: pytest --cov-report=xml:coverage.xml  # --verbose --cov=src 
+        run: pytest
 
       - name: Adjust coverage paths
         run: sed -i 's|/home/runner/work/ByteBiteBurgersUsers/ByteBiteBurgersUsers/src|src|g' coverage.xml
