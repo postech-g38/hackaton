@@ -11,3 +11,4 @@ class DoctorModel(EntityModel):
     speciality: Mapped[str]
     appointment_duration: Mapped[str]
     distance: Mapped[float]
+    rate: Mapped[float]

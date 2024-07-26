@@ -3,7 +3,7 @@ from http import HTTPStatus
 from fastapi import APIRouter, Depends, Response, Request, Query, Body, Path
 
 from src.schemas.paginate_schema import QuerySchema, PaginateResponseSchema
-from src.schemas.appointment_schema import AppointmentSchema
+from src.schemas.record_schema import RecordSchema, RecordResponseSchema
 from src.services.record_service import RecordService
 from src.adapters.repositories.record_repository import RecordRepository
 from src.schemas.record_schema import RecordSchema, RecordResponseSchema
@@ -13,7 +13,7 @@ from src.settings import GeneralSettings
 
 BUCKET = GeneralSettings.aws_settings.simple_storage_service_bucket_name
 
-router = APIRouter(prefix='/records', tags=['Pedido'])
+router = APIRouter(prefix='/records', tags=['Records'])
 
 
 # @router.get(
@@ -56,7 +56,7 @@ def search(
     response_model=RecordResponseSchema
 )
 def create(
-    payload: AppointmentSchema = Body(...), 
+    payload: RecordSchema = Body(...), 
     database = Depends(database_session)
 ):
     service = RecordService(RecordRepository(database), SimpleStorageService(BUCKET))
@@ -74,7 +74,7 @@ def create(
 )
 def update(
     record_id: int = Path(...), 
-    payload: AppointmentSchema = Body(...), 
+    payload: RecordSchema = Body(...), 
     database = Depends(database_session)
 ):
     service = RecordService(RecordRepository(database),SimpleStorageService(BUCKET))
