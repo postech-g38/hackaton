@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from pydantic.types import FutureDatetime
 
 from src.enums import AppointmentStatus

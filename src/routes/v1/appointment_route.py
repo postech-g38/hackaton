@@ -12,7 +12,7 @@ from src.adapters.repositories.doctor_repository import DoctorRepository
 from src.adapters.database.settings import database_session
 from src.adapters.sns.settings import SimpleNotificationService
 
-router = APIRouter(prefix='/appointments', tags=['Pedido'])
+router = APIRouter(prefix='/appointments', tags=['Appointments'])
 
 
 # @router.get(

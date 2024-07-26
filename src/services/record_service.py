@@ -6,6 +6,7 @@ from src.adapters.protocols.storage_protocol import StorageProtocol
 from src.domain.entities.record_entity import Record
 from src.common.date_helper import DateHelper
 from src.services.service_base import BaseService
+from src.adapters.database.models.record_model import RecordModel
 
 
 class RecordService(BaseService):
@@ -26,7 +27,7 @@ class RecordService(BaseService):
         return self.query_result(self._record_repository.search_by_id(record_id))
 
     def create(self, record: Record) -> Record:
-        return self._record_repository.save(record)
+        return self._record_repository.save(RecordModel(**record.dict()))
 
     def update(self, record_id: str, record: Record) -> Record:
         record = self.query_result(self._record_repository.search_by_id(record_id))
