@@ -19,7 +19,7 @@ jobs:
           python-version: '3.12'
       
       - name: Install SQLite3
-        run: sudo apt-get install sqlite3
+        run: sudo apt-get install -y sqlite3
 
       - name: Install dependencies
         run: |
