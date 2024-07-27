@@ -16,5 +16,5 @@ class EntityModel(BaseModel):
 
     id: Mapped[int] = mapped_column(primary_key=True, nullable=False, index=True, autoincrement=True)
     created_at: Mapped[datetime] = mapped_column(default=datetime.now)
-    updated_at: Mapped[Optional[datetime]] = mapped_column(onupdate=datetime.now)
+    updated_at: Mapped[Optional[datetime]] = mapped_column(default=datetime.now, onupdate=datetime.now)
     deleted_at: Mapped[Optional[datetime]]

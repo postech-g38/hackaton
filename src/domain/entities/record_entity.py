@@ -10,4 +10,7 @@ class Record:
     executed_procedurea: list[str]
     medical_prescription: str
     appointment_show_on_certification: str
+
+    def dict(self) -> dict:
+        ...
     

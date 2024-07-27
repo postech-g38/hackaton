@@ -14,3 +14,5 @@ class Appointment:
     status: AppointmentStatus
     link: str
     
+    def dict(self) -> dict:
+        ...

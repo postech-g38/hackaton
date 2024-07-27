@@ -7,6 +7,7 @@ from src.domain.entities.doctor_entity import Doctor
 from src.domain.ports.payload_port import DoctorSearchPayload
 from src.common.date_helper import DateHelper
 from src.services.service_base import BaseService, NoConentException
+from src.adapters.database.models.appointments_model import AppointmentModel
 
 from src.enums import AppointmentStatus
 
@@ -26,31 +27,32 @@ class AppointmentService(BaseService):
         self._client_repository = client_repository
         self._notification = notification
     
-    def paginate(self, query) -> List[Appointment]:
-        pass
+    def paginate(self) -> List[Appointment]:
+        if paginate := self._appointment_repository.get_all():
+            return paginate
+        raise NoConentException('Appointments')
 
     def search(self, appointment_id: int) -> Appointment:
         return self.query_result(self._appointment_repository.search_by_id(appointment_id))
 
     def create(self, appointment: Appointment) -> Appointment:
-        if ocuppied := self._appointment_repository.search_by_time_window(appointment.start_time, appointment.end_time):
-            raise NoConentException('No avaliable time space')
-        return self._appointment_repository.save(Appointment)
+        appointment.link = 'https://meet.google.com/abc-123'
+        return self._appointment_repository.save(AppointmentModel(**appointment.dict()))
 
-    def update(self, appointment_id, appointment: Appointment) -> Appointment:
-        appointment = self.query_result(self._appointment_repository.search_by_id(appointment_id))
-        appointment = self._appointment_repository.update(appointment_id, appointment)
+    def update(self, appointment_id: int, appointment: Appointment) -> Appointment:
+        data = self.query_result(self._appointment_repository.search_by_id(appointment_id))
+        self._appointment_repository.update(appointment_id, appointment.dict())
 
-        if appointment.status == AppointmentStatus.CONFIRMED.value:
-            client = self._client_repository.search_by_id(appointment.client_id)
-            self._notification.sms()
+        # if appointment.status == AppointmentStatus.CONFIRMED.value:
+        #     client = self._client_repository.search_by_id(appointment.client_id)
+        #     self._notification.sms(client.email, 'Your appointment has been confirmed')
         
-        return appointment
+        return data
     
-    def delete(self, appointment_id) -> Appointment:
+    def delete(self, appointment_id: int) -> Appointment:
         appointment = self.query_result(self._appointment_repository.search_by_id(appointment_id))
         appointment.deleted_at = DateHelper.now()
-        self._appointment_repository.delete(appointment)
+        self._appointment_repository.delete(appointment_id)
         return appointment
 
     def medic_distance(self, search: DoctorSearchPayload) -> List[Doctor]:
