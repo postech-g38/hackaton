@@ -83,3 +83,4 @@ class GeneralSettings(BaseSettings):
 @lru_cache
 def get_settings() -> GeneralSettings:
     return GeneralSettings()
+
