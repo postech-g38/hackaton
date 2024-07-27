@@ -85,9 +85,8 @@ jobs:
           aws eks update-kubeconfig --name ${{ secrets.HACKATHON_CLUSTER_NAME }}
         
       - name: List files in k8s/api/
-        run: ls -R k8s/api/
+        run: ls -R k8s/
 
       - name: Deploy to Kubernetes
-        run: kubectl apply -f k8s/api/
-
+        run: kubectl apply -f k8s/
         
