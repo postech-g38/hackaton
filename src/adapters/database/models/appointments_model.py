@@ -12,7 +12,6 @@ class AppointmentModel(EntityModel):
     
     client_id: Mapped[int] = mapped_column(ForeignKey('client.id'))
     doctor_id: Mapped[int] = mapped_column(ForeignKey('doctor.id'))
-    record_id: Mapped[int] = mapped_column(ForeignKey('record.id'))
 
     start_time: Mapped[datetime]
     end_time: Mapped[datetime]

@@ -12,7 +12,6 @@ class FakerAppointment(dict):
     
     client_id = 1
     doctor_id = 1
-    record_id = 1
     start_time = datetime.now()
     end_time = datetime.now()
     detail = 'detail'
@@ -24,7 +23,6 @@ class FakerAppointment(dict):
             deleted_at=None,
             client_id=self.client_id,
             doctor_id=self.doctor_id,
-            record_id=self.record_id,
             start_time=self.start_time,
             end_time=self.end_time,
             detail=self.detail,
@@ -37,7 +35,6 @@ class FakerAppointment(dict):
             'deleted_at': None,
             'client_id': self.client_id,
             'doctor_id': self.doctor_id,
-            'record_id': self.record_id,
             'start_time': self.start_time.strftime('%Y-%m-%d %H:%M:%S'),
             'end_time': self.end_time.strftime('%Y-%m-%d %H:%M:%S'),
             'detail': self.detail,

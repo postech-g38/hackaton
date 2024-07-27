@@ -10,7 +10,6 @@ from src.enums import AppointmentStatus
 class AppointmentSchema(BaseModel):
     client_id: int
     doctor_id: int
-    record_id: int
 
     start_time: datetime
     end_time: datetime
