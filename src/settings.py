@@ -56,7 +56,7 @@ class DatabaseSettings(BaseSettings):
         return self.__build_uri('postgresql', 'asyncpg')
 
     def __build_memory_uri(self, driver: str, path: str) -> str:
-        return f"{driver}:///.targets/unittest.db"
+        return f"{driver}:///unittest.db"
 
     def __build_uri(self, driver: str, dialect: str) -> URL:
         return URL.create(
