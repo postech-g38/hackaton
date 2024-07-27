@@ -9,4 +9,4 @@ pytest-integration>=0.2.3
 
 ipdb==0.13.13
 freezegun==1.2.2
-
+pysqlite3==0.5.3
