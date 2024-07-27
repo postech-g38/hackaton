@@ -17,6 +17,12 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.12'
+      
+      - name: Set up SQLite
+        uses: actions/setup-sqlite@v1
+        with:
+          sqlite-version: 3.40.0
+          sqlite-year: 2022
 
       - name: Install dependencies
         run: |
