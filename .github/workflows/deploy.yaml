@@ -65,7 +65,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: hiltonbruno633/byte-burguer-user:latest
+          tags: hiltonbruno633/hackaton-application:latest
 
   deploy:
     needs: build-and-push
