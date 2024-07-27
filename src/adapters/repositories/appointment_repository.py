@@ -28,10 +28,14 @@ class AppointmentRepository(SQLAlchemyRepository):
     def search_by_time_window(self, start_time, end_time) -> List[AppointmentModel]:
         stmt = select(self.entity_model).where(
             or_(
-                self.entity_model.start_time >= start_time,
-                self.entity_model.start_time < end_time,
-                self.entity_model.end_time > start_time,
-                self.entity_model.end_time <= end_time
+                and_(
+                    self.entity_model.start_time >= start_time,
+                    self.entity_model.start_time <= end_time
+                ),
+                and_(
+                    self.entity_model.end_time >= start_time,
+                    self.entity_model.end_time <= end_time
+                )
             )
         )
         results = self.session_db.execute(stmt)

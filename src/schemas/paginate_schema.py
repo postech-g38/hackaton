@@ -1,4 +1,6 @@
-from pydantic import BaseModel
+from typing import List
+
+from pydantic import BaseModel, ConfigDict
 
 
 class QuerySchema(BaseModel):
@@ -6,4 +8,5 @@ class QuerySchema(BaseModel):
 
 
 class PaginateResponseSchema(BaseModel):
-    pass
+    data: List
+    total: int

@@ -14,7 +14,7 @@ class SimpleNotificationService(Aws):
         super().__init__("sns")
 
     def sms(self, phone: str, message: str) -> Dict:
-        return self._client.meta.client.publish(
+        return self._client.publish(
             PhoneNumber=phone, 
             Message=message
         )

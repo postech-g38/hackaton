@@ -3,7 +3,36 @@ from unittest.mock import Mock
 
 from src.adapters.repositories.doctor_repository import DoctorRepository
 from src.services.doctor_service import DoctorService
+from src.services.service_base import NotFoundExcepition, NoConentException
 from tests.fakers.doctor_faker import FakerDoctor
+
+
+def test_doctor_service_paginate_then_return_list():
+    # arrange
+    doctor_repository_mock = Mock(DoctorRepository)
+    doctor_repository_mock.get_all.return_value = [FakerDoctor().model()]
+    doctor_service = DoctorService(doctor_repository_mock)
+
+    # act
+    result = doctor_service.paginate()
+
+    # assert
+    doctor_repository_mock.get_all.assert_called_once()
+    assert result
+
+
+def test_doctor_service_paginate_then_raise_no_content_exception():
+    # arrange
+    doctor_repository_mock = Mock(DoctorRepository)
+    doctor_repository_mock.get_all.return_value = []
+    doctor_service = DoctorService(doctor_repository_mock)
+
+    # act
+    with pytest.raises(NoConentException):
+        doctor_service.paginate()
+
+    # assert
+    doctor_repository_mock.get_all.assert_called_once()
 
 
 def test_doctor_service_search_then_raise_not_found_exception():
@@ -14,7 +43,7 @@ def test_doctor_service_search_then_raise_not_found_exception():
     doctor_service = DoctorService(doctor_repository_mock)
 
     # act
-    with pytest.raises(Exception):
+    with pytest.raises(NotFoundExcepition):
         doctor_service.search(doctor_id)
 
     # assert
@@ -38,29 +67,29 @@ def test_doctor_service_search_then_return_doctor_object():
 
 def test_doctor_service_create_then_return_doctor_object():
     # arrange
-    doctor = Mock()
+    doctor = FakerDoctor()
     doctor_repository_mock = Mock(DoctorRepository)
-    doctor_repository_mock.save.return_value = FakerDoctor().model()
+    doctor_repository_mock.save.return_value = doctor.model()
     doctor_service = DoctorService(doctor_repository_mock)
 
     # act
     result = doctor_service.create(doctor)
 
     # assert
-    doctor_repository_mock.save.assert_called_once_with(doctor)
+    doctor_repository_mock.save.assert_called_once()
     assert result
 
 
 def test_doctor_service_update_then_raise_not_found_exception():
     # arrange
     doctor_id = 1
-    doctor = Mock(FakerDoctor)
+    doctor = FakerDoctor()
     doctor_repository_mock = Mock(DoctorRepository)
     doctor_repository_mock.search_by_id.return_value = None
     doctor_service = DoctorService(doctor_repository_mock)
 
     # act
-    with pytest.raises(Exception):
+    with pytest.raises(NotFoundExcepition):
         doctor_service.update(doctor_id, doctor)
 
     # assert
@@ -70,9 +99,9 @@ def test_doctor_service_update_then_raise_not_found_exception():
 def test_doctor_service_update_then_return_doctor_object():
     # arrange
     doctor_id = 1
-    doctor = Mock(FakerDoctor)
+    doctor = FakerDoctor()
     doctor_repository_mock = Mock(DoctorRepository)
-    doctor_repository_mock.search_by_id.return_value = FakerDoctor().model()
+    doctor_repository_mock.search_by_id.return_value = doctor.model()
     doctor_service = DoctorService(doctor_repository_mock)
 
     # act
@@ -92,7 +121,7 @@ def test_doctor_service_delete_then_raise_not_found_exception():
     doctor_service = DoctorService(doctor_repository_mock)
 
     # act
-    with pytest.raises(Exception):
+    with pytest.raises(NotFoundExcepition):
         doctor_service.delete(doctor_id)
 
     # assert

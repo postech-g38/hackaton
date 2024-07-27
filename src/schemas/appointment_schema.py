@@ -1,26 +1,35 @@
 from datetime import datetime
+from typing import List, Optional
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator, ConfigDict
 from pydantic.types import FutureDatetime
 
 from src.enums import AppointmentStatus
 
 
 class AppointmentSchema(BaseModel):
-    patient_id: str
-    doctor_id: str
-    record_id: str
+    client_id: int
+    doctor_id: int
+    record_id: int
 
-    start_time: FutureDatetime
-    end_time: FutureDatetime
-    detail: str
+    start_time: datetime
+    end_time: datetime
+    
+    detail: Optional[str]
     status: AppointmentStatus = AppointmentStatus.PENDING_CONFIRMATION
-    link: str
+    link: Optional[str] = None
 
 
-class AppointmentResponseSchema(BaseModel):
+class AppointmentResponseSchema(AppointmentSchema):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     created_at: datetime
     updated_at: datetime
-    deleted_at: datetime
-    
+    deleted_at: Optional[datetime]
+    link: str
+
+
+class AppointmentPaginateResponseSchema(BaseModel):
+    data: List[AppointmentResponseSchema]
+    total: int

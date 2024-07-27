@@ -59,7 +59,7 @@ class SQLAlchemyRepository:
         )
         self.session_db.execute(statement=statement)
         self.session_db.flush()
-
+        
     def delete(self, model_id: Optional[Type[EntityModel]]) -> None:
         """Delete row from database
         :param model: BaseModel to delete
