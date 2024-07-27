@@ -24,11 +24,10 @@ jobs:
           pip install -r requirements/local.txt
 
       - name: Run pytest with coverage
-        run: pytest
+        run: pytest --cov=src --cov-report=xml
 
       - name: Adjust coverage paths
         run: sed -i 's|/home/runner/work/hackaton/hackaton/src|src|g' coverage.xml
-        
 
       - name: List coverage file
         run: ls -la coverage.xml
