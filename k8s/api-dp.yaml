@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: hackathon-api
-          image: hiltonbruno633/hackaton-api:latest
+          image: hiltonbruno633/hackaton-application:latest
           ports:
             - containerPort: 80
           envFrom:
@@ -21,7 +21,7 @@ spec:
                 name: secret-hackaton
           livenessProbe:
             httpGet:
-              path: //health_check
+              path: /healthcheck
               port: 8000
             periodSeconds: 10
             failureThreshold: 5
