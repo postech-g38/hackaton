@@ -79,7 +79,7 @@ O paciente pode acessar, fazer upload de arquivos e compartilhar seu prontuário
 **Justificativa:** Optamos pelo RDS para gerenciamento do banco de dados relacional. O RDS oferece alta disponibilidade, backups automáticos e manutenção simplificada do banco de dados.
 
 ### EKS (Elastic Kubernetes Service)
-**Justificativa:** Optamos pelo EKS para orquestração de containers. Kubernetes é uma ferramenta poderosa para gerenciar aplicações em containers, proporcionando escalabilidade, resiliência e facilidade de deploy.
+**Justificativa:** Optamos pelo EKS para orquestração de containers. O Kubernetes é uma ferramenta poderosa para gerenciar aplicações em containers, proporcionando escalabilidade, resiliência e facilidade de deploy.
 
 ### Grupos de Segurança (Security Groups)
 **Justificativa:** A configuração de grupos de segurança para controlar o tráfego de entrada e saída do sistema, aumentando a segurança da aplicação.
