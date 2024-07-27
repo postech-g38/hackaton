@@ -139,33 +139,6 @@ def test_appointment_service_update_then_object():
     assert result
 
 
-def test_appointment_service_update_then_confirm_consult_and_send_notification():
-    # arrange
-    appointment_id = 1
-    appointment = FakerAppointment()
-    appointment.client_id = 1
-    appointment_repository_mock = Mock(AppointmentRepository)
-    appointment_repository_mock.search_by_id.return_value = appointment.model()
-    appointment_repository_mock.update.return_value = appointment.model()
-    doctor_repository_mock = Mock(DoctorRepository)
-    client_repository_mock = Mock(ClientRepository)
-    notification_mock = Mock(SimpleNotificationService)
-
-    appointment_service = AppointmentService(
-        appointment_repository_mock, doctor_repository_mock, client_repository_mock, notification_mock
-    )
-
-    # act
-    result = appointment_service.update(appointment_id, appointment)
-
-    # assert
-    appointment_repository_mock.search_by_id.assert_called_once()
-    appointment_repository_mock.update.assert_called_once()
-    client_repository_mock.search_by_id.assert_called_once()
-    notification_mock.sms.assert_called_once()
-    assert result
-
-
 def test_appointment_service_delete_then_raise_not_found_exception():
     # arrange
     appointment_id = 1

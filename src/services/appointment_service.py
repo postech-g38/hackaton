@@ -43,9 +43,9 @@ class AppointmentService(BaseService):
         data = self.query_result(self._appointment_repository.search_by_id(appointment_id))
         self._appointment_repository.update(appointment_id, appointment.dict())
 
-        if appointment.status == AppointmentStatus.CONFIRMED.value:
-            client = self._client_repository.search_by_id(appointment.client_id)
-            self._notification.sms(client.email, 'Your appointment has been confirmed')
+        # if appointment.status == AppointmentStatus.CONFIRMED.value:
+        #     client = self._client_repository.search_by_id(appointment.client_id)
+        #     self._notification.sms(client.email, 'Your appointment has been confirmed')
         
         return data
     
