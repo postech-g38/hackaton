@@ -27,7 +27,8 @@ jobs:
         run: pytest
 
       - name: Adjust coverage paths
-        run: sed -i 's|/home/runner/work/ByteBiteBurgersUsers/ByteBiteBurgersUsers/src|src|g' coverage.xml
+        run: sed -i 's|/home/runner/work/hackaton/hackaton/src|src|g' coverage.xml
+        
 
       - name: List coverage file
         run: ls -la coverage.xml
