@@ -41,11 +41,11 @@ class DatabaseSettings(BaseSettings):
 
     @property
     def database_unittest_sync_uri(self) -> str:
-        return self.__build_memory_uri('sqlite', '.targets/unittest.db')
+        return self.__build_memory_uri('sqlite', 'unittest.db')
     
     @property
     def database_unittest_async_uri(self) -> str:
-        return self.__build_memory_uri('aiosqlite', '.targets/unittest.db')
+        return self.__build_memory_uri('aiosqlite', 'unittest.db')
 
     @property
     def database_sync_uri(self) -> URL:
