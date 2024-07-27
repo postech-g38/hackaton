@@ -138,7 +138,7 @@ _Saga Pattern disponível em [Miro](https://miro.com/app/board/uXjVMjABiFY=/?mov
  
  ## Demonstração da Infraestrutura na Cloud / Demonstração do MVP
  Esses dois itens foram agrupados em um vídeo <br><br>
-   [![Assista ao Vídeo no YouTube](https://img.shields.io/badge/Assista%20ao%20V%C3%ADdeo-no%20YouTube-red?style=for-the-badge&logo=youtube)](https://www.youtube.com/watch?v=XXXXXXX)
+   [![Assista ao Vídeo no YouTube](https://img.shields.io/badge/Assista%20ao%20V%C3%ADdeo-no%20YouTube-red?style=for-the-badge&logo=youtube)](https://www.youtube.com/@hiltonrocha3378)
 
 ## Demonstração da Esteira de CI/CD
 
